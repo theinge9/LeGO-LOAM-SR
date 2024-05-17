@@ -1,6 +1,7 @@
 # LeGO-LOAM-SR
 
-This code is a fork from [LeGO-LOAM-BOR](https://github.com/facontidavide/LeGO-LOAM-BOR) to migrate [LeGO-LOAM](https://github.com/RobustFieldAutonomyLab/LeGO-LOAM) algorithm to ROS2.
+This code is a fork from [LeGO-LOAM-SR](https://github.com/eperdices/LeGO-LOAM-SR) to migrate [LeGO-LOAM](https://github.com/RobustFieldAutonomyLab/LeGO-LOAM) algorithm to ROS2 Humble.
+Some syntax difference for ROS Humble is modified.
 
 This code does not modify and/or improve the original [LeGO-LOAM](https://github.com/RobustFieldAutonomyLab/LeGO-LOAM) algorithm.
 
@@ -17,15 +18,19 @@ The system takes in point cloud from a Velodyne VLP-16 Lidar (palced horizontal)
 
 ## 2. Dependencies
 
-- [ROS2](https://index.ros.org/doc/ros2/Installation/Dashing/) (tested with dashing)
-- [gtsam](https://github.com/borglab/gtsam/releases) (Georgia Tech Smoothing and Mapping library, 4.0.0-alpha2)
+- [ROS2](https://index.ros.org/doc/ros2/Installation/Humble/) (tested with humble)
+- [gtsam](https://github.com/borglab/gtsam/releases) (Georgia Tech Smoothing and Mapping library)
   ```
-  wget -O ~/Downloads/gtsam.zip https://github.com/borglab/gtsam/archive/4.0.0-alpha2.zip
-  cd ~/Downloads/ && unzip gtsam.zip -d ~/Downloads/
-  cd ~/Downloads/gtsam-4.0.0-alpha2/
-  mkdir build && cd build
-  cmake ..
-  sudo make install
+    git clone https://github.com/borglab/gtsam
+    cd gtsam && git checkout 4.2a9
+    mkdir build && cd build
+    # For Ubuntu 22.04, add -DGTSAM_USE_SYSTEM_EIGEN=ON
+    cmake .. -DGTSAM_BUILD_EXAMPLES_ALWAYS=OFF \
+             -DGTSAM_BUILD_TESTS=OFF \
+             -DGTSAM_WITH_TBB=OFF \
+             -DGTSAM_BUILD_WITH_MARCH_NATIVE=OFF
+    make -j$(nproc)
+    sudo make install
   ```
 
 ## 3. Compile
@@ -34,7 +39,7 @@ You can use the following commands to download and compile the package.
 
 ```
 cd ~/dev_ws/src
-git clone https://github.com/eperdices/LeGO-LOAM-SR.git
+git clone https://github.com/theinge9/LeGO-LOAM-SR.git
 cd ..
 colcon build
 ```

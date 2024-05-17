@@ -65,13 +65,13 @@ FeatureAssociation::FeatureAssociation(const std::string &name, Channel<Projecti
   _cycle_count = 0;
 
   // Declare parameters
-  this->declare_parameter(PARAM_VERTICAL_SCANS);
-  this->declare_parameter(PARAM_HORIZONTAL_SCANS);
-  this->declare_parameter(PARAM_SCAN_PERIOD);
-  this->declare_parameter(PARAM_FREQ_DIVIDER);
-  this->declare_parameter(PARAM_EDGE_THRESHOLD);
-  this->declare_parameter(PARAM_SURF_THRESHOLD);
-  this->declare_parameter(PARAM_DISTANCE);
+  this->declare_parameter(PARAM_VERTICAL_SCANS,rclcpp::PARAMETER_INTEGER);
+  this->declare_parameter(PARAM_HORIZONTAL_SCANS,rclcpp::PARAMETER_INTEGER);
+  this->declare_parameter(PARAM_SCAN_PERIOD,rclcpp::PARAMETER_DOUBLE);
+  this->declare_parameter(PARAM_FREQ_DIVIDER,rclcpp::PARAMETER_INTEGER);
+  this->declare_parameter(PARAM_EDGE_THRESHOLD,rclcpp::PARAMETER_DOUBLE);
+  this->declare_parameter(PARAM_SURF_THRESHOLD,rclcpp::PARAMETER_DOUBLE);
+  this->declare_parameter(PARAM_DISTANCE,rclcpp::PARAMETER_DOUBLE);
 
   float nearest_dist;
 
@@ -1198,7 +1198,11 @@ void FeatureAssociation::publishOdometry() {
   tf2::Quaternion q;
   geometry_msgs::msg::Quaternion geoQuat;
   q.setRPY(transformSum[2], -transformSum[0], -transformSum[1]);
-  geoQuat = tf2::toMsg(q);
+  // geoQuat = tf2::toMsg(q);
+  geoQuat.x = q.x();
+  geoQuat.y = q.y();
+  geoQuat.z = q.z();
+  geoQuat.w = q.w();
 
   laserOdometry.header.stamp = cloudHeader.stamp;
   laserOdometry.pose.pose.orientation.x = -geoQuat.y;
