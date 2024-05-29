@@ -18,7 +18,7 @@ def generate_launch_description():
   use_sim_time = LaunchConfiguration('use_sim_time', default='true')
 
   # Nodes Configurations
-  config_file = os.path.join(get_package_share_directory('lego_loam_sr'), 'config', 'loam_config.yaml')
+  config_file = os.path.join(get_package_share_directory('lego_loam_sr'), 'config', 'xt32_config.yaml')
   rviz_config = os.path.join(get_package_share_directory('lego_loam_sr'), 'rviz', 'test.rviz')
 
   # Tf transformations
@@ -32,8 +32,9 @@ def generate_launch_description():
   transform_camera = Node(
     package='tf2_ros',
     executable='static_transform_publisher',
-    name='base_link_to_camera',
-    arguments=['--x', '0', '--y', '0', '--z', '0', '--roll', '-1.570795', '--pitch', '-1.570795', '--yaw', '0', '--frame-id', 'camera', '--child-frame-id', 'base_link'],
+    name='lidar_to_camera',
+    #arguments=['--x', '0', '--y', '0', '--z', '0', '--roll', '-1.570795', '--pitch', '-1.570795', '--yaw', '0', '--frame-id', 'camera', '--child-frame-id', 'base_link'],
+    arguments=['--x', '0.5', '--y', '0', '--z', '0.54', '--roll', '0.0', '--pitch', '0.0', '--yaw', '1.5708', '--frame-id', 'camera', '--child-frame-id', 'hesai_lidar'],
   )
 
   # LeGO-LOAM
@@ -42,7 +43,7 @@ def generate_launch_description():
     executable='lego_loam_sr',
     output='screen',
     parameters=[config_file],
-    remappings=[('/lidar_points', '/velodyne_points')],
+    remappings=[('/lidar_points', '/lidar_points')],
   )
 
   # Rviz
